@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.homepage     = "http://github.com/sigmundfridge/DayFlow"
   s.license      = 'MIT'
   s.author       = { "Evadne Wu" => "ev@radi.ws" }
-  s.source       = { :git => "http://github.com/sigmundfridge/DayFlow.git", :tag => "0.0.2.1" }
+  s.source       = { :git => "http://github.com/sigmundfridge/DayFlow.git", :tag => "0.0.3" }
   s.platform     = :ios, '6.0'
   s.source_files = 'DayFlow', 'DayFlow/**/*.{h,m}'
   s.exclude_files = 'DayFlow/Exclude'
