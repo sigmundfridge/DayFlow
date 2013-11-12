@@ -5,5 +5,6 @@
 - (instancetype) initWithCalendar:(NSCalendar *)calendar;
 
 @property (nonatomic, readwrite, strong) NSDate *selectedDate;
+@property (nonatomic, readwrite, strong) NSMutableArray *selectedDates;
 
 @end

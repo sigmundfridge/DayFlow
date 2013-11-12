@@ -13,4 +13,6 @@
 @property (nonatomic, readonly, strong) DFDatePickerView *datePickerView;
 @property (nonatomic, readwrite, weak) id<DFDatePickerViewControllerDelegate> delegate;
 
+-(id) initForMultipleDates;
+
 @end

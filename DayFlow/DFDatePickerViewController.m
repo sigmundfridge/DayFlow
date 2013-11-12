@@ -1,11 +1,32 @@
 #import "DFDatePickerViewController.h"
 
+@interface DFDatePickerViewController ()
+@property (nonatomic, readonly) BOOL multipleDates;
+@end
+
+
 @implementation DFDatePickerViewController
 @synthesize datePickerView = _datePickerView;
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
 	[self.view addSubview:self.datePickerView];
+}
+
+-(id) init {
+    self = [super init];
+    if(self) {
+        _multipleDates = NO;
+    }
+    return self;
+}
+
+-(id) initForMultipleDates{
+    self = [self init];
+    if(self) {
+        _multipleDates = YES;
+    }
+    return self;
 }
 
 - (DFDatePickerView *) datePickerView {
