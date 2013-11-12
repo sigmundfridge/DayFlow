@@ -25,7 +25,7 @@ static NSString * const DFDatePickerViewMonthHeaderIdentifier = @"monthHeader";
 @synthesize collectionViewLayout = _collectionViewLayout;
 
 - (instancetype) initWithCalendar:(NSCalendar *)calendar {
-	
+	NSLog(@"Init");
 	self = [super initWithFrame:CGRectZero];
 	if (self) {
 		
