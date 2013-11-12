@@ -34,9 +34,9 @@
 - (DFDatePickerView *) datePickerView {
 	if (!_datePickerView) {
 		_datePickerView = [DFDatePickerView new];
+        _datePickerView.multiSelect = self.multipleDates;
 		_datePickerView.frame = self.view.bounds;
 		_datePickerView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-        _datePickerView.multiSelect = self.multipleDates;
 	}
 	return _datePickerView;
 }
@@ -67,17 +67,17 @@
 }
 
 /*- (void) selectCellForCollectionView:(UICollectionView *)collection atIndexPath:(NSIndexPath *)indexPath
-{
-    [collection selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-    [self.datePickerView collectionView:collection didSelectItemAtIndexPath:indexPath];
-}
-
-- (void) deselectCellForCollectionView:(UICollectionView *)collection atIndexPath:(NSIndexPath *)indexPath
-{
-    [collection deselectItemAtIndexPath:indexPath animated:YES];
-    [self.datePickerView collectionView:collection didDeselectItemAtIndexPath:indexPath];
-}
-*/
+ {
+ [collection selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+ [self.datePickerView collectionView:collection didSelectItemAtIndexPath:indexPath];
+ }
+ 
+ - (void) deselectCellForCollectionView:(UICollectionView *)collection atIndexPath:(NSIndexPath *)indexPath
+ {
+ [collection deselectItemAtIndexPath:indexPath animated:YES];
+ [self.datePickerView collectionView:collection didDeselectItemAtIndexPath:indexPath];
+ }
+ */
 
 - (void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];

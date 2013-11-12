@@ -25,7 +25,7 @@ static NSString * const DFDatePickerViewMonthHeaderIdentifier = @"monthHeader";
 @synthesize collectionViewLayout = _collectionViewLayout;
 
 - (instancetype) initWithCalendar:(NSCalendar *)calendar {
-	NSLog(@"Init");
+	
 	self = [super initWithFrame:CGRectZero];
 	if (self) {
 		
@@ -74,7 +74,7 @@ static NSString * const DFDatePickerViewMonthHeaderIdentifier = @"monthHeader";
 }
 
 - (void) willMoveToSuperview:(UIView *)newSuperview {
-
+    
 	[super willMoveToSuperview:newSuperview];
 	
 	if (newSuperview && !_collectionView) {
@@ -83,11 +83,18 @@ static NSString * const DFDatePickerViewMonthHeaderIdentifier = @"monthHeader";
 		NSIndexPath *cellIndexPath = [NSIndexPath indexPathForItem:([cv numberOfItemsInSection:(cv.numberOfSections / 2)] / 2) inSection:(cv.numberOfSections / 2)];
 		[self.collectionView scrollToItemAtIndexPath:cellIndexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
 	}
+    
+}
 
+-(NSMutableArray*) selectedDates {
+    if(!_selectedDates) {
+        _selectedDates = [[NSMutableArray alloc] init];
+    }
+    return _selectedDates;
 }
 
 - (UICollectionView *) collectionView {
-
+    
 	if (!_collectionView) {
 		_collectionView = [[DFDatePickerCollectionView alloc] initWithFrame:self.bounds collectionViewLayout:self.collectionViewLayout];
 		_collectionView.backgroundColor = [UIColor whiteColor];
@@ -95,14 +102,14 @@ static NSString * const DFDatePickerViewMonthHeaderIdentifier = @"monthHeader";
 		_collectionView.delegate = self;
 		_collectionView.showsVerticalScrollIndicator = NO;
 		_collectionView.showsHorizontalScrollIndicator = NO;
+        NSLog(@"Multi selec %u", _multiSelect);
+        _collectionView.allowsMultipleSelection = _multiSelect;
 		[_collectionView registerClass:[DFDatePickerDayCell class] forCellWithReuseIdentifier:DFDatePickerViewCellIdentifier];
 		[_collectionView registerClass:[DFDatePickerMonthHeader class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:DFDatePickerViewMonthHeaderIdentifier];
-
 		[_collectionView reloadData];
 	}
-	
 	return _collectionView;
-
+    
 }
 
 - (UICollectionViewFlowLayout *) collectionViewLayout {
@@ -121,7 +128,7 @@ static NSString * const DFDatePickerViewMonthHeaderIdentifier = @"monthHeader";
 	}
 	
 	return _collectionViewLayout;
-
+    
 }
 
 - (void) pickerCollectionViewWillLayoutSubviews:(DFDatePickerCollectionView *)pickerCollectionView {
@@ -152,13 +159,13 @@ static NSString * const DFDatePickerViewMonthHeaderIdentifier = @"monthHeader";
 }
 
 - (void) appendPastDates {
-
+    
 	[self shiftDatesByComponents:((^{
 		NSDateComponents *dateComponents = [NSDateComponents new];
 		dateComponents.month = -6;
 		return dateComponents;
 	})())];
-
+    
 }
 
 - (void) appendFutureDates {
@@ -187,7 +194,7 @@ static NSString * const DFDatePickerViewMonthHeaderIdentifier = @"monthHeader";
 	
 	_fromDate = [self pickerDateFromDate:[self.calendar dateByAddingComponents:components toDate:[self dateFromPickerDate:self.fromDate] options:0]];
 	_toDate = [self pickerDateFromDate:[self.calendar dateByAddingComponents:components toDate:[self dateFromPickerDate:self.toDate] options:0]];
-
+    
 #if 0
 	
 	//	This solution trips up the collection view a bit
@@ -237,7 +244,7 @@ static NSString * const DFDatePickerViewMonthHeaderIdentifier = @"monthHeader";
 	[cv reloadData];
 	[cvLayout invalidateLayout];
 	[cvLayout prepareLayout];
-
+    
 #endif
 	
 	NSInteger toSection = [self.calendar components:NSMonthCalendarUnit fromDate:[self dateForFirstDayInSection:0] toDate:fromSectionOfDate options:0].month;
@@ -264,17 +271,17 @@ static NSString * const DFDatePickerViewMonthHeaderIdentifier = @"monthHeader";
 }
 
 - (NSDate *) dateForFirstDayInSection:(NSInteger)section {
-
+    
 	return [self.calendar dateByAddingComponents:((^{
 		NSDateComponents *dateComponents = [NSDateComponents new];
 		dateComponents.month = section;
 		return dateComponents;
 	})()) toDate:[self dateFromPickerDate:self.fromDate] options:0];
-
+    
 }
 
 - (NSUInteger) numberOfWeeksForMonthOfDate:(NSDate *)date {
-
+    
 	NSDate *firstDayInMonth = [self.calendar dateFromComponents:[self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:date]];
 	
 	NSDate *lastDayInMonth = [self.calendar dateByAddingComponents:((^{
@@ -317,7 +324,7 @@ static NSString * const DFDatePickerViewMonthHeaderIdentifier = @"monthHeader";
 	
 	cell.date = cellPickerDate;
 	cell.enabled = ((firstDayPickerDate.year == cellPickerDate.year) && (firstDayPickerDate.month == cellPickerDate.month));
-	cell.selected = self.multiSelect ? [self.selectedDate isEqualToDate:cellDate] : [self.selectedDates containsObject:cellDate];
+	cell.selected = self.multiSelect ? [self.selectedDates containsObject:cellDate] : [self.selectedDate isEqualToDate:cellDate];
 	return cell;
 	
 }
@@ -339,23 +346,21 @@ static NSString * const DFDatePickerViewMonthHeaderIdentifier = @"monthHeader";
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	DFDatePickerDayCell *cell = ((DFDatePickerDayCell *)[collectionView cellForItemAtIndexPath:indexPath]);
 	[self willChangeValueForKey:@"selectedDate"];
-	_selectedDate = cell
-		? [self.calendar dateFromComponents:[self dateComponentsFromPickerDate:cell.date]]
-		: nil;
+    NSDate *date = [self.calendar dateFromComponents:[self dateComponentsFromPickerDate:cell.date]];
+    
+    if(cell) {
+        _selectedDate = date;
+        [self.selectedDates addObject:date];
+    }
+    else _selectedDate = nil;
 	[self didChangeValueForKey:@"selectedDate"];
     
-    NSDate *date = [self.calendar dateFromComponents:[self dateComponentsFromPickerDate:cell.date]];
-    [self.selectedDates addObject:date];
-    NSLog(@"ADD: %@", self.selectedDates);
-
 }
 
 -(void) collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath: (NSIndexPath *)indexPath {
 	DFDatePickerDayCell *cell = ((DFDatePickerDayCell *)[collectionView cellForItemAtIndexPath:indexPath]);
     NSDate *date = [self.calendar dateFromComponents:[self dateComponentsFromPickerDate:cell.date]];
     [self.selectedDates removeObject:date];
-        NSLog(@"Rem: %@", date);
-        NSLog(@"ARRAy: %@", self.selectedDates);
 }
 
 - (void) setSelectedDate:(NSDate *)selectedDate {
@@ -364,7 +369,7 @@ static NSString * const DFDatePickerViewMonthHeaderIdentifier = @"monthHeader";
 }
 
 - (UICollectionReusableView *) collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-
+    
 	if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
 		
 		DFDatePickerMonthHeader *monthHeader = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:DFDatePickerViewMonthHeaderIdentifier forIndexPath:indexPath];
@@ -384,7 +389,7 @@ static NSString * const DFDatePickerViewMonthHeaderIdentifier = @"monthHeader";
 	}
 	
 	return nil;
-
+    
 }
 
 - (NSDate *) dateFromPickerDate:(DFDatePickerDate)dateStruct {
