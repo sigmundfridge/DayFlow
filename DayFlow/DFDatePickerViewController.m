@@ -49,21 +49,51 @@
 }
 
 -(void) addMultiDateToolbar {
+    CGSize dimensions = [self currentSize];
+    double toolbarHeight = 44;
+    self.toolbar = [[UIToolbar alloc] init];
+    self.toolbar.frame = CGRectMake(0 ,0, dimensions.width, toolbarHeight);
+    self.toolbar.translatesAutoresizingMaskIntoConstraints = NO;
+    
     UIBarButtonItem *save = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(save:)];
     UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
     self.toolbar.items = [NSArray arrayWithObjects:save, cancel, nil];
+    
+    [self.view addSubview:self.toolbar];
+    
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.toolbar attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.toolbar attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.toolbar attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.toolbar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:0.0 constant:44.0]];
+    
 }
+
+- (CGSize) currentSize{
+    return [self sizeInOrientation:[UIApplication sharedApplication].statusBarOrientation];
+}
+
+- (CGSize) sizeInOrientation:(UIInterfaceOrientation)orientation{
+    CGSize size = [UIScreen mainScreen].bounds.size;
+    UIApplication *application = [UIApplication sharedApplication];
+    if (UIInterfaceOrientationIsLandscape(orientation))
+        size = CGSizeMake(size.height, size.width);
+    if (application.statusBarHidden == NO)
+        size.height -= MIN(application.statusBarFrame.size.width, application.statusBarFrame.size.height);
+    return size;
+}
+
 
 - (void)cancel:(id)sender {
     // Dismiss View Controller
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void) save:(id) sender {
     //    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_defaultContext];
     //    [localContext MR_saveToPersistentStoreAndWait];
     [self.delegate datePickerViewController:self didSelectDates:[self.datePickerView.selectedDates copy]];
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 /*- (void) selectCellForCollectionView:(UICollectionView *)collection atIndexPath:(NSIndexPath *)indexPath

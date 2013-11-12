@@ -102,7 +102,6 @@ static NSString * const DFDatePickerViewMonthHeaderIdentifier = @"monthHeader";
 		_collectionView.delegate = self;
 		_collectionView.showsVerticalScrollIndicator = NO;
 		_collectionView.showsHorizontalScrollIndicator = NO;
-        NSLog(@"Multi selec %u", _multiSelect);
         _collectionView.allowsMultipleSelection = _multiSelect;
 		[_collectionView registerClass:[DFDatePickerDayCell class] forCellWithReuseIdentifier:DFDatePickerViewCellIdentifier];
 		[_collectionView registerClass:[DFDatePickerMonthHeader class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:DFDatePickerViewMonthHeaderIdentifier];
