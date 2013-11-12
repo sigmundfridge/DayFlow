@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "DayMultiFlow"
-  s.version      = "0.0.2.1"
+  s.version      = "0.0.3"
   s.summary      = "Strollable MultiDate Picker."
   s.homepage     = "http://github.com/sigmundfridge/DayFlow"
   s.license      = 'MIT'
