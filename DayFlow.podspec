@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name         = "DayMultiFlow"
+  s.name         = "DayFlow"
   s.version      = "0.0.3"
   s.summary      = "Strollable MultiDate Picker."
   s.homepage     = "http://github.com/sigmundfridge/DayFlow"
