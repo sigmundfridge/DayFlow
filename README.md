@@ -1,18 +1,23 @@
-# DayFlow
+# MultiDayFlow
 
-iOS Date Picker + Infinite Scrolling.
+iOS Date Picker + Infinite Scrolling + multiple day selection
 
 ## Play
 
-Look at the [Sample App](https://github.com/evadne/DayFlow-Sample). Check out the [Sample Video](http://vimeo.com/evadne/dayflow-debut). Have fun. Make it faster. Fork and send pull requests. Figure out hooks for customization.
+A (unfinished) version of Evadne Wu's Dayflow (Look at the [Sample App](https://github.com/evadne/DayFlow-Sample)) that allows multiple days to be selected.
 
 ## Use
 
-Plop `DFDatePickerViewController` in, and implement the one method in `<DFDatePickerViewControllerDelegate>`:
+For single day selection see [Evadne Wu's page](https://github.com/evadne/DayFlow). This is my ongoing attempt to add multiple day functionality. There is a new protocol method 
+	- (void) datePickerViewController:(DFDatePickerViewController *)controller didSelectDates:(NSArray *)dates;
 
-	- (void) datePickerViewController:(DFDatePickerViewController *)controller didSelectDate:(NSDate *)date;
+To initialise the controller for multiple selection, use:
+	DFDatePickerViewController *picker = [[DFDatePickerViewController alloc ] initForMultipleDates:YES];
 
-That pretty much sums up what it does.
+Otherwise for single date selection you can init it the normal way or with 
+	DFDatePickerViewController *picker = [[DFDatePickerViewController alloc ] initForMultipleDates:NO];
+
+This is definitely a WORK IN PROGRESS.
 
 ## Licensing
 
@@ -21,3 +26,4 @@ This project is in the public domain.  You can embed it in works for hire or use
 ## Credits
 
 *	[Evadne Wu](http://radi.ws)
+*   [Nick Jones](http://sigfrid.co.uk)
