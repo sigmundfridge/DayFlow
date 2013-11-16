@@ -87,27 +87,12 @@
 
 
 - (void)cancel:(id)sender {
-    // Dismiss View Controller
+    [self.delegate cancelledDatePickerViewController:self];
 }
 
 -(void) save:(id) sender {
-    //    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_defaultContext];
-    //    [localContext MR_saveToPersistentStoreAndWait];
     [self.delegate datePickerViewController:self didSelectDates:[self.datePickerView.selectedDates copy]];
 }
-
-/*- (void) selectCellForCollectionView:(UICollectionView *)collection atIndexPath:(NSIndexPath *)indexPath
- {
- [collection selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
- [self.datePickerView collectionView:collection didSelectItemAtIndexPath:indexPath];
- }
- 
- - (void) deselectCellForCollectionView:(UICollectionView *)collection atIndexPath:(NSIndexPath *)indexPath
- {
- [collection deselectItemAtIndexPath:indexPath animated:YES];
- [self.datePickerView collectionView:collection didDeselectItemAtIndexPath:indexPath];
- }
- */
 
 - (void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];

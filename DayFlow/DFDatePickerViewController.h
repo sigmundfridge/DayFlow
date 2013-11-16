@@ -5,6 +5,7 @@
 @protocol DFDatePickerViewControllerDelegate
 
 - (void) datePickerViewController:(DFDatePickerViewController *)controller didSelectDate:(NSDate *)date;
+- (void) cancelledDatePickerViewController:(DFDatePickerViewController *)controller;
 - (void) datePickerViewController:(DFDatePickerViewController *)controller didSelectDates:(NSArray *)dates;
 
 @end
